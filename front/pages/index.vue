@@ -13,13 +13,13 @@
             </div>
             <div class="absolute inset-0 flex flex-col justify-center items-center mt-6">
                 <div
-                    class="flex w-[522px] h-[44px] bg-white rounded-sm items-center shadow-[0_15px_65px_-20px_rgba(0,0,0,0.3)] shadow-black">
+                    class="relative flex w-[522px] h-[44px] bg-white rounded-sm items-center shadow-[0_15px_65px_-20px_rgba(0,0,0,0.3)] shadow-black">
                     <img src="~/public/pesquisar.png" class="w-[25px] h-[25px] m-2" />
                     <input type="text" v-model="searchQuery" @focus="handleFocus" @blur="handleBlur"
                         placeholder="Procure por cidades ou estados"
                         class="w-full h-full bg-transparent outline-none placeholder:font-sans placeholder:text-gray-500">
                     <div v-if="isFocused && postalInfos.length && searchQuery"
-                        class="absolute mt-[350px] w-[522px] bg-white rounded-sm shadow-lg z-10">
+                        class="absolute left-0 top-full mt-1 w-full bg-white rounded-sm shadow-lg z-10">
                         <ul>
                             <li v-for="info in postalInfos" :key="info.postalCode"
                                 @mousedown.prevent="selectPostalInfo(info as PostalInfo)"
@@ -38,8 +38,8 @@
                 </div>
                 <p class="mt-2 text-white font-medium text-base font-mono">Recent Locations</p>
                 <div class="flex mt-2 space-x-4 w-[522px]">
-                    <div class="flex flex-col w-1/3 h-[142px] bg-black/25 backdrop-blur-[20px] text-white rounded-lg items-center justify-center"
-                        v-for="recent in recentPostalInfos">
+                    <div class="flex flex-col w-1/3 h-[142px] bg-black/25 backdrop-blur-[20px] text-white rounded-lg items-center justify-center hover:cursor-pointer "
+                        v-for="recent in recentPostalInfos" @mousedown.prevent="selectPostalInfo(recent as PostalInfo)">
                         <p class="font-serif text-[28px] px-4 text-center">
                             {{ recent.adminName2 }}
                         </p>
@@ -118,7 +118,7 @@ export default {
 
         const selectPostalInfo = (info: PostalInfo) => {
             router.push({
-                path: '/teste',
+                path: '/selected',
                 query: {
                     postalInfo: JSON.stringify(info.toJSON()),
                 },
@@ -136,7 +136,6 @@ export default {
         const fetchStatesData = async () => {
             try {
                 stateWeatherDatas.value = await StateWeatherService.findAll();
-                console.log('State Weather Datas:', stateWeatherDatas.value);
             } catch (error) {
                 console.error('Error:', error);
             }

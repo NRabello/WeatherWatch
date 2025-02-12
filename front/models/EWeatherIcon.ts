@@ -37,6 +37,6 @@ export enum WeatherCode {
   };
   
   export function getWeatherIcon(weatherCode: number): string {
-    return WeatherIconMap[weatherCode as WeatherCode] || 'default.png';
+    return WeatherIconMap[weatherCode as WeatherCode] || 'sol.png';
   }
   

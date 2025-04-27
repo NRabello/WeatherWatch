@@ -52,7 +52,7 @@
         </div>
         <div class="grid grid-cols-3 gap-[10px] p-4">
             <div v-for="(stateData, index) in stateWeatherDatas" :key="stateData.latitude"
-                class="flex items-center bg-white p-2 rounded shadow hover:bg-blue-200 hover:cursor-pointer h-[42px]">
+                class="flex items-center bg-white p-2 rounded shadow hover:bg-blue-200 hover:cursor-pointer h-[42px]" @mousedown.prevent="selectState(stateData as StateWeatherData, states[index])">
                 <div class="flex-grow font-serif font-medium">{{ states[index] }}</div>
                 <img :src="`/${getWeatherIcon(stateData.current.weather_code)}`" alt="Weather Icon"
                     class="absolute ml-[470px] w-8 h-8" />
@@ -126,11 +126,36 @@ export default {
 
             const postalInfosList: IPostalInfo[] = JSON.parse(localStorage.getItem('postalInfos') || '[]');
 
-            if (postalInfosList.length === 3) postalInfosList.shift();
+            const existingIndex = postalInfosList.findIndex(item => item.adminName2 === info.adminName2);
+
+            if (existingIndex !== -1) {
+                postalInfosList.splice(existingIndex, 1);
+            } else if (postalInfosList.length === 3) {
+                postalInfosList.shift();
+            }
 
             postalInfosList.push(info.toJSON());
+
             localStorage.setItem('postalInfos', JSON.stringify(postalInfosList));
+            
             isFocused.value = false;
+        };
+
+        const selectState = (state: StateWeatherData, name: string) => {
+            const { latitude, longitude } = state;
+
+            const postalInfo: PostalInfo = new PostalInfo({
+                lat: latitude,
+                lng: longitude,
+                adminName1: name,
+            });
+
+            router.push({
+                path: '/selected',
+                query: {
+                    postalInfo: JSON.stringify(postalInfo),
+                },
+            });
         };
 
         const fetchStatesData = async () => {
@@ -159,6 +184,7 @@ export default {
             handleBlur,
             selectPostalInfo,
             getWeatherIcon,
+            selectState
         };
     },
 };

@@ -1,10 +1,10 @@
 <template>
-  <div class="bg-gradient-to-b from-blue-100 to-blue-200 min-h-screen">
-    <NavBar />
-    <section class="p-4">
+<div class="bg-gradient-to-b from-[#76a9f1] to-[#d6e6f3] min-h-screen">
+  <NavBar />
+    <section class="mt-5">
       <CurrentWeather :weather="weatherData.current as CurrentModel" :postalInfo="postalInfo as PostalInfo" />
     </section>
-    <section class="p-4">
+    <section class="p-2">
       <DailyWeatherList :data="weatherData.daily" />
     </section>
   </div>

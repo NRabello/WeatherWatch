@@ -49,6 +49,10 @@ export class PostalInfo {
     this._lat = lat;
   }
 
+  static empty(): PostalInfo {
+    return new PostalInfo({});
+  }
+
   get adminCode2(): string {
     return this._adminCode2;
   }

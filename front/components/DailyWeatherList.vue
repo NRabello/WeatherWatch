@@ -1,41 +1,40 @@
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4 max-w-6xl mx-auto">
     <div
-      v-for="(day, index) in data.time"
+      v-for="(day, index) in data.time.slice(0, 6)"
       :key="index"
-      class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6"
+      class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 p-6 flex flex-col justify-between"
     >
       <!-- Cabeçalho do card (data e temperatura) -->
-      <div class="flex justify-between items-center mb-4">
+      <div class="flex justify-between items-center mb-6">
         <p class="text-xl font-semibold text-gray-800">
           {{ formatDate(day) }}
         </p>
-        <div class="flex items-center space-x-2">
+        <div class="flex items-center space-x-4">
           <i :class="getWeatherIcon(data.weather_code[index])" class="text-3xl"></i> <!-- Ícone dinâmico -->
-          <img :src="`/${getWeatherIcon(data.weather_code[index])}`" alt="Weather Icon"
-          class="ml-[470px] w-8 h-8" />
-          <p class="text-xl font-semibold text-gray-800">
-            {{ data.temperature_2m_max[index] }}°C / {{ data.temperature_2m_min[index] }}°C
-          </p>
+          <div class="text-center">
+            <p class="text-xl font-semibold text-red-500">{{ data.temperature_2m_max[index] }}°C</p>
+            <p class="text-xl font-semibold text-blue-500">{{ data.temperature_2m_min[index] }}°C</p>
+          </div>
         </div>
       </div>
 
       <!-- Detalhes do clima -->
-      <div class="space-y-2 text-sm text-gray-600">
+      <div class="space-y-4 text-sm text-gray-600">
         <div class="flex justify-between">
-          <p>Nascer do Sol:</p>
+          <p class="font-semibold">Nascer do Sol:</p>
           <p>{{ formatTime(data.sunrise[index]) }}</p>
         </div>
         <div class="flex justify-between">
-          <p>Pôr do Sol:</p>
+          <p class="font-semibold">Pôr do Sol:</p>
           <p>{{ formatTime(data.sunset[index]) }}</p>
         </div>
         <div class="flex justify-between">
-          <p>Índice UV Máx:</p>
-          <p>{{ data.uv_index_max[index] }}</p>
+          <p class="font-semibold">Índice UV Máx:</p>
+          <p class="font-semibold">{{ data.uv_index_max[index] }}</p>
         </div>
         <div class="flex justify-between">
-          <p>Vento Máx:</p>
+          <p class="font-semibold">Vento Máx:</p>
           <p>{{ data.wind_speed_10m_max[index] }} km/h</p>
         </div>
       </div>
